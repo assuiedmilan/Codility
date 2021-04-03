@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using NUnit.Framework;
 
 namespace Codility.CountingElements
@@ -9,42 +8,42 @@ namespace Codility.CountingElements
         public int[] solution(int n, int[] a)
         {
             var currentMax = 0;
+            var startingLine = 0;
             var counter = new int [n];
-            var previousMoveWasAMaxCounter = false;
 
             foreach (var counterToIncrease in a)
             {
                 var counterToIncreaseIndex = counterToIncrease - 1;
 
-                if (counterToIncrease > counter.Length)
-                {
-                    if (previousMoveWasAMaxCounter) continue;
-
-                    currentMax = counter.Max();
-                    previousMoveWasAMaxCounter = true;
-                }
-                else
+                if (counterToIncrease <= counter.Length)
                 {
                     var counterToIncreaseValue = counter[counterToIncreaseIndex];
 
-                    if (counterToIncreaseValue < currentMax)
+                    if (counterToIncreaseValue < startingLine)
                     {
-                        counter[counterToIncreaseIndex] = currentMax + 1;
+                        counter[counterToIncreaseIndex] = startingLine + 1;
                     }
                     else
                     {
                         counter[counterToIncreaseIndex] += 1;
                     }
 
-                    previousMoveWasAMaxCounter = false;
+                    if (currentMax < counter[counterToIncreaseIndex])
+                    {
+                        currentMax = counter[counterToIncreaseIndex];
+                    }
+                }
+                else
+                {
+                    startingLine = currentMax;
                 }
             }
 
             for (var i = 0; i < counter.Length; i++)
             {
-                if (counter[i] < currentMax)
+                if (counter[i] < startingLine)
                 {
-                    counter[i] = currentMax;
+                    counter[i] = startingLine;
                 }
             }
 
