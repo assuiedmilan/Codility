@@ -8,37 +8,44 @@ namespace Codility.CountingElements
     {
         public int[] solution(int n, int[] a)
         {
-            var max = 0;
-            var maxLoopIndex = a.Length;
-            var i = 0;
+            var currentMax = 0;
+            var counter = new int [n];
+            var previousMoveWasAMaxCounter = false;
 
-            while(i<maxLoopIndex)
+            foreach (var counterToIncrease in a)
             {
-                if (a[i] <= n)
+                var counterToIncreaseIndex = counterToIncrease - 1;
+
+                if (counterToIncrease > counter.Length)
                 {
-                    i++;
-                    continue;
+                    if (previousMoveWasAMaxCounter) continue;
+
+                    currentMax = counter.Max();
+                    previousMoveWasAMaxCounter = true;
                 }
-
-                var take = a.Take(i).ToArray();
-
-                if (take.Length != 0)
+                else
                 {
-                    max += take.GroupBy(x => x).Select(x => new {num = x, cnt = x.Count()}).OrderByDescending(g => g.cnt).Select(g => g).First().cnt;
+                    var counterToIncreaseValue = counter[counterToIncreaseIndex];
+
+                    if (counterToIncreaseValue < currentMax)
+                    {
+                        counter[counterToIncreaseIndex] = currentMax + 1;
+                    }
+                    else
+                    {
+                        counter[counterToIncreaseIndex] += 1;
+                    }
+
+                    previousMoveWasAMaxCounter = false;
                 }
-
-                a = a.Skip(i + 1).ToArray();
-                maxLoopIndex = a.Length;
-
-                i = 0;
-
             }
 
-            var counter = Enumerable.Repeat(max, n).ToArray();
-
-            foreach (int j in a)
+            for (var i = 0; i < counter.Length; i++)
             {
-                counter[j - 1]++;
+                if (counter[i] < currentMax)
+                {
+                    counter[i] = currentMax;
+                }
             }
 
             return counter;
