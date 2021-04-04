@@ -13,7 +13,6 @@ namespace Codility.Stacks_n_Queues
         public int solution(string s) {
 
             var expectedClosingOperands = new Stack();
-            var result = 1;
 
             foreach (var operand in s)
             {
@@ -27,23 +26,15 @@ namespace Codility.Stacks_n_Queues
                 }
                 else
                 {
-                    if (!StackHasItem(expectedClosingOperands))
-                    {
-                        result = 0;
-                        break;
-                    }
+                    if (!StackHasItem(expectedClosingOperands)) return 0;
 
                     var expectedClosingOperand = expectedClosingOperands.Pop();
 
-                    if (operand.Equals(expectedClosingOperand)) continue;
-                    result = 0;
-                    break;
+                    if (!operand.Equals(expectedClosingOperand)) return 0;
                 }
             }
 
-            if (StackHasItem(expectedClosingOperands)) result = 0;
-
-            return result;
+            return StackHasItem(expectedClosingOperands) ? 0:1;
         }
 
         private bool StackHasItem(Stack stack)
