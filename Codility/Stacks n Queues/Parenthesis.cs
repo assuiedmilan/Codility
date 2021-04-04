@@ -5,10 +5,10 @@ using NUnit.Framework;
 
 namespace Codility.Stacks_n_Queues
 {
-    public class Brackets
+    public class Parenthesis
     {
-        private const string OpeningChars = "{[(";
-        private const string ClosingChars = "}])";
+        private const string OpeningChars = "(";
+        private const string ClosingChars = ")";
 
         public int solution(string s) {
 
@@ -43,9 +43,9 @@ namespace Codility.Stacks_n_Queues
         }
     }
 
-    public class TestBrackets
+    public class TestParenthesis
     {
-        private Brackets _instance;
+        private Parenthesis _instance;
 
         public static IEnumerable<TestCaseData> TestCases
         {
@@ -53,19 +53,19 @@ namespace Codility.Stacks_n_Queues
             get
             {
                 yield return new TestCaseData("(").Returns(0);
-                yield return new TestCaseData("}").Returns(0);
+                yield return new TestCaseData(")").Returns(0);
                 yield return new TestCaseData("").Returns(1);
-                yield return new TestCaseData("{[()()]}").Returns(1);
-                yield return new TestCaseData("([)()]").Returns(0);
-                yield return new TestCaseData("[(){[()]}]").Returns(1);
-                yield return new TestCaseData("[(){[()}]]").Returns(0);
+                yield return new TestCaseData("((()()))").Returns(1);
+                yield return new TestCaseData("(()(()").Returns(0);
+                yield return new TestCaseData("(()((())))").Returns(1);
+                yield return new TestCaseData("(()((())()").Returns(0);
             }
         }
 
         [SetUp]
         public void Setup()
         {
-            _instance = new Brackets();
+            _instance = new Parenthesis();
         }
 
         [Test]
